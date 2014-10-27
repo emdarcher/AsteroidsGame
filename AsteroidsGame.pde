@@ -1,3 +1,12 @@
+/**basic spaceship stuff**/
+int basic_corners = 3;
+int basic_xCorners[basic_corners] = {
+  -8,16,-8,
+};
+int basic_yCorners[basic_corners] = {
+  -8,0,8,
+};
+
 //your variable declarations here
 public void setup() 
 {
@@ -7,9 +16,35 @@ public void draw()
 {
   //your code here
 }
-class SpaceShip //extends Floater  
+class SpaceShip extends Floater  
 {   
     //your code here
+    public void setX(int x){myCenterX=x;}
+    public int getX(){return myCenterX;}
+    public void setY(int y){myCenterY=y;}
+    public int getY(){return myCenterY;}
+    public void setDirectionX(double x){myDirectionX=x;}
+    public double getDirectionX(){return myDirectionX;}
+    public void setDirectionY(double y){myDirectionY=y;}
+    public double getDirectionY(){return myDirectionY;}
+    public void setPointDirection(int degrees){myPointDirection=degrees;}
+    public double getPointDirection(){return myPointDirection;}
+
+    SpaceShip(){
+      //constructor
+      corners = basic_corners;
+      xCorners = new int [corners];
+      yCorners = new int [corners];
+      myCenterX = 0; myCenterY = 0;
+      myDirectionX = 0; myDirectionY = 0;
+      myPointDirection = 0;
+      myColor = #239589;//stuff
+      for(int i=0;i<corners;i++){
+        //ints arrays
+        xCorners[i] = basic_xCorners[i];
+        yCorners[i] = basic_yCorners[i];
+      }
+    }
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
