@@ -1,3 +1,19 @@
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class AsteroidsGame extends PApplet {
+
 /**basic spaceship stuff**/
 public static final int basic_corners = 3;
 int basic_xCorners[] = {
@@ -22,16 +38,6 @@ public void draw()
   //your code here
   spacey.show();
 }
-public void keyPressed(){
-  if(keyCode == LEFT){
-
-  } else if (keyCode == RIGHT){
-
-  } else if (keyCode == UP){
-    
-  }
-
-} 
 class SpaceShip extends Floater  
 {   
     //your code here
@@ -54,7 +60,7 @@ class SpaceShip extends Floater
       myCenterX = width/2; myCenterY = height/2;
       myDirectionX = 0; myDirectionY = 0;
       myPointDirection = 0;
-      myColor = #239589;//stuff
+      myColor = 0xff239589;//stuff
       for(int i=0;i<corners;i++){
         //ints arrays
         xCorners[i] = basic_xCorners[i];
@@ -139,3 +145,12 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   }   
 } 
 
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "AsteroidsGame" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
+}
