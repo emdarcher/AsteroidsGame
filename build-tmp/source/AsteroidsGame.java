@@ -25,6 +25,9 @@ int basic_yCorners[] = {
 
 public static final int bg_val =24;
 
+public static final int NUM_STARS = 64;
+Star [] stars;
+
 SpaceShip spacey;
 
 //your variable declarations here
@@ -34,31 +37,42 @@ public void setup()
   background(bg_val);
   size(255,255);
   spacey = new SpaceShip();
+  stars = new Star[NUM_STARS];
+  for(int i=0;i<stars.length;i++){
+    stars[i]=new Star();
+  }
 }
 public void draw() 
 {
   //your code here
   background(bg_val);
   spacey.move();
+  for(int i=0;i<stars.length;i++){
+    stars[i].show();  
+  }
   spacey.show();
 }
 public void keyPressed(){
-if(!((keyCode ==LEFT)&&(keyCode == RIGHT))){  
-  if(keyCode == LEFT){
-    spacey.rotate(-8);
-  } //else 
-  if (keyCode == RIGHT){
-    spacey.rotate(8);
-  } 
-}
+if(key == 'b'){
+  spacey.brake(0.1f);
+} else {
+  if(!((keyCode ==LEFT)&&(keyCode == RIGHT))){  
+    if(keyCode == LEFT){
+      spacey.rotate(-8);
+    } //else 
+    if (keyCode == RIGHT){
+      spacey.rotate(8);
+    } 
+  }
 
-if(!((keyCode==UP)&&(keyCode==DOWN))){
-  //else 
-  if (keyCode == UP){
-    spacey.accelerate((double)0.1f);
-  } //else 
-  if (keyCode == DOWN){
-    spacey.accelerate((double)-0.1f);
+  if(!((keyCode==UP)&&(keyCode==DOWN))){
+    //else 
+    if (keyCode == UP){
+      spacey.accelerate((double)0.1f);
+    } //else 
+    if (keyCode == DOWN){
+      spacey.accelerate((double)-0.1f);
+    }
   }
 }
 } 
@@ -89,6 +103,14 @@ class SpaceShip extends Floater
         //ints arrays
         xCorners[i] = basic_xCorners[i];
         yCorners[i] = basic_yCorners[i];
+      }
+    }
+    public void brake(double bAmount){
+      if(myDirectionX != 0){
+        myDirectionX += (myDirectionX>0) ? (0-bAmount) : bAmount;
+      }
+      if(myDirectionY != 0){
+        myDirectionY += (myDirectionY>0) ? (0-bAmount) : bAmount;
       }
     }
 
@@ -170,6 +192,22 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   }   
 } 
 
+public class Star {
+  private int Sx, Sy;
+  private int Scolor;
+  private int Sdia;
+  Star(){
+    Sx = (int)(width*(Math.random()));
+    Sy = (int)(height*(Math.random()));
+    Scolor= 0xffffffff;
+    Sdia = 2;
+  }
+  public void show(){
+    fill(Scolor);
+    stroke(Scolor);
+    ellipse(Sx, Sy, Sdia, Sdia);
+  }
+}
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "AsteroidsGame" };
     if (passedArgs != null) {
