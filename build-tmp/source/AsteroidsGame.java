@@ -23,21 +23,45 @@ int basic_yCorners[] = {
   -8,0,8,
 };
 
+public static final int bg_val =24;
+
 SpaceShip spacey;
 
 //your variable declarations here
 public void setup() 
 {
   //your code here
-  background(24);
+  background(bg_val);
   size(255,255);
   spacey = new SpaceShip();
 }
 public void draw() 
 {
   //your code here
+  background(bg_val);
+  spacey.move();
   spacey.show();
 }
+public void keyPressed(){
+if(!((keyCode ==LEFT)&&(keyCode == RIGHT))){  
+  if(keyCode == LEFT){
+    spacey.rotate(-8);
+  } //else 
+  if (keyCode == RIGHT){
+    spacey.rotate(8);
+  } 
+}
+
+if(!((keyCode==UP)&&(keyCode==DOWN))){
+  //else 
+  if (keyCode == UP){
+    spacey.accelerate((double)0.1f);
+  } //else 
+  if (keyCode == DOWN){
+    spacey.accelerate((double)-0.1f);
+  }
+}
+} 
 class SpaceShip extends Floater  
 {   
     //your code here
@@ -67,6 +91,7 @@ class SpaceShip extends Floater
         yCorners[i] = basic_yCorners[i];
       }
     }
+
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
