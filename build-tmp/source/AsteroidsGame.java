@@ -14,6 +14,15 @@ import java.io.IOException;
 
 public class AsteroidsGame extends PApplet {
 
+/* keypress stuff */
+public static final int UP_BIT    = 0;
+public static final int LEFT_BIT  = 1;
+public static final int DOWN_BIT  = 2;
+public static final int RIGHT_BIT = 3;
+public static final int BRAKE_BIT = 4;
+
+public byte key_bits = 0x00;
+
 /**basic spaceship stuff**/
 public static final int basic_corners = 3;
 int basic_xCorners[] = {
@@ -45,6 +54,7 @@ public void setup()
 public void draw() 
 {
   //your code here
+  scan_key_bits();
   background(bg_val);
   spacey.move();
   for(int i=0;i<stars.length;i++){
@@ -52,9 +62,34 @@ public void draw()
   }
   spacey.show();
 }
+public void scan_key_bits(){
+  if((key_bits & (byte)(1<<BRAKE_BIT))!=0){
+    spacey.brake(0.1f);
+  }
+  if((key_bits & (byte)(1<<UP_BIT))!=0){
+    spacey.accelerate((double)0.1f);
+  }
+  if((key_bits & (byte)(1<<DOWN_BIT))!=0){
+    spacey.accelerate((double)-0.1f);
+  }
+  if((key_bits & (byte)(1<<LEFT_BIT))!=0){
+    spacey.rotate(-8);
+  }
+  if((key_bits & (byte)(1<<RIGHT_BIT))!=0){
+    spacey.rotate(8);
+  }
+}
+
 public void keyPressed(){
 if(key == 'b'){
-  spacey.brake(0.1f);
+  key_bits |= (1<<BRAKE_BIT);
+}
+if(keyCode == UP){key_bits |= (1<<UP_BIT);}
+if(keyCode == LEFT){key_bits |= (1<<LEFT_BIT);}
+if(keyCode == RIGHT){key_bits |= (1<<RIGHT_BIT);}
+if(keyCode == DOWN){key_bits |= (1<<DOWN_BIT);}
+/*if(key == 'b'){
+  spacey.brake(0.1);
 } else {
   if(!((keyCode ==LEFT)&&(keyCode == RIGHT))){  
     if(keyCode == LEFT){
@@ -68,13 +103,13 @@ if(key == 'b'){
   if(!((keyCode==UP)&&(keyCode==DOWN))){
     //else 
     if (keyCode == UP){
-      spacey.accelerate((double)0.1f);
+      spacey.accelerate((double)0.1);
     } //else 
     if (keyCode == DOWN){
-      spacey.accelerate((double)-0.1f);
+      spacey.accelerate((double)-0.1);
     }
   }
-}
+}*/
 } 
 class SpaceShip extends Floater  
 {   
