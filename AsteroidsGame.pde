@@ -4,7 +4,7 @@ public static final int LEFT_BIT  = 1;
 public static final int DOWN_BIT  = 2;
 public static final int RIGHT_BIT = 3;
 public static final int BRAKE_BIT = 4;
-
+public static final int HYPER_BIT = 5;
 public byte key_bits = 0x00;
 
 /**basic spaceship stuff**/
@@ -50,6 +50,9 @@ public void scan_key_bits(){
   if((key_bits & (byte)(1<<BRAKE_BIT))!=0){
     spacey.brake(0.1);
   }
+  if((key_bits & (byte)(1<<HYPER_BIT))!=0){
+    spacey.hyperspace();
+  }
   if((key_bits & (byte)(1<<UP_BIT))!=0){
     spacey.accelerate((double)0.1);
   }
@@ -67,6 +70,10 @@ public void scan_key_bits(){
 public void keyPressed(){
 if(key == 'b'){
   key_bits |= (1<<BRAKE_BIT);
+}
+
+if(key == 'h'){
+  key_bits |= (1<<HYPER_BIT);
 }
 if(keyCode == UP){key_bits |= (1<<UP_BIT);}
 if(keyCode == LEFT){key_bits |= (1<<LEFT_BIT);}
@@ -98,6 +105,9 @@ if(keyCode == DOWN){key_bits |= (1<<DOWN_BIT);}
 public void keyReleased() {
 if(key == 'b'){
   key_bits &= ~(1<<BRAKE_BIT);
+}
+if(key == 'h'){
+  key_bits &= ~(1<<HYPER_BIT);
 }
 if(keyCode == UP){key_bits &= ~(1<<UP_BIT);}
 if(keyCode == LEFT){key_bits &= ~(1<<LEFT_BIT);}
@@ -140,6 +150,12 @@ class SpaceShip extends Floater
       if(myDirectionY != 0){
         myDirectionY += (myDirectionY>0) ? (0-bAmount) : bAmount;
       }
+    }
+    public void hyperspace(){
+      myDirectionX=0; myDirectionY=0;
+      myPointDirection = (double)((Math.random()*360)-180);
+      myCenterX = (double)((Math.random()*width));
+      myCenterY = (double)((Math.random()*height)); 
     }
 
 }
