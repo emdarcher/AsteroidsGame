@@ -57,7 +57,7 @@ public void scan_key_bits(){
     spacey.accelerate((double)0.1);
   }
   if((key_bits & (byte)(1<<DOWN_BIT))!=0){
-    spacey.accelerate((double)-0.1);
+    spacey.accelerate((double)(-0.1));
   }
   if((key_bits & (byte)(1<<LEFT_BIT))!=0){
     spacey.rotate(-8);
