@@ -111,6 +111,15 @@ if(keyCode == DOWN){key_bits |= (1<<DOWN_BIT);}
   }
 }*/
 } 
+public void keyReleased() {
+if(key == 'b'){
+  key_bits &= ~(1<<BRAKE_BIT);
+}
+if(keyCode == UP){key_bits &= ~(1<<UP_BIT);}
+if(keyCode == LEFT){key_bits &= ~(1<<LEFT_BIT);}
+if(keyCode == RIGHT){key_bits &= ~(1<<RIGHT_BIT);}
+if(keyCode == DOWN){key_bits &= ~(1<<DOWN_BIT);} 
+} 
 class SpaceShip extends Floater  
 {   
     //your code here
