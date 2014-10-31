@@ -16,6 +16,14 @@ int basic_yCorners[] = {
   -8,0,8,
 };
 
+public static final int a_corners = 6;
+int a_xCorners[a_corners] = {
+  -11,7,13,6,-11,-5,
+};
+int a_yCorners[a_corners] = {
+  -8,-8,0,10,8,0,
+};
+
 public static final int bg_val =24;
 
 public static final int NUM_STARS = 64;
@@ -177,7 +185,25 @@ class Asteroid extends Floater {
 
 
   Asteroid(){
-
+    int rotSpeed = (int)((Math.random()*4)-2);
+    corners = a_corners;
+      xCorners = new int [corners];
+      yCorners = new int [corners];
+      myCenterX = width/2; 
+      myCenterY = height/2;
+      myDirectionX = 0; myDirectionY = 0;
+      myPointDirection = 0;
+      myColor = #239589;//stuff
+      for(int i=0;i<corners;i++){
+        //ints arrays
+        xCorners[i] = a_xCorners[i];
+        yCorners[i] = a_yCorners[i];
+      }
+  }
+  public void move(){
+    //rotate
+    rotate(rotSpeed);
+    super.move();
   }
 
 }
