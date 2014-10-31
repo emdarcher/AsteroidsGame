@@ -17,10 +17,10 @@ int basic_yCorners[] = {
 };
 
 public static final int a_corners = 6;
-int a_xCorners[a_corners] = {
+int a_xCorners[] = {
   -11,7,13,6,-11,-5,
 };
-int a_yCorners[a_corners] = {
+int a_yCorners[] = {
   -8,-8,0,10,8,0,
 };
 
@@ -169,7 +169,7 @@ class SpaceShip extends Floater
 }
 
 class Asteroid extends Floater {
-  int speed_rot;
+  int rotSpeed;
 
 //your code here
     public void setX(int x){myCenterX=x;}

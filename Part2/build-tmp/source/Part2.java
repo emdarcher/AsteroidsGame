@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream; 
 import java.io.IOException; 
 
-public class AsteroidsGame extends PApplet {
+public class Part2 extends PApplet {
 
 /* keypress stuff */
 public static final int UP_BIT    = 0;
@@ -21,7 +21,7 @@ public static final int DOWN_BIT  = 2;
 public static final int RIGHT_BIT = 3;
 public static final int BRAKE_BIT = 4;
 public static final int HYPER_BIT = 5;
-public byte key_bits = 0x00;
+public int key_bits = 0x00;
 
 /**basic spaceship stuff**/
 public static final int basic_corners = 3;
@@ -30,6 +30,14 @@ int basic_xCorners[] = {
 };
 int basic_yCorners[] = {
   -8,0,8,
+};
+
+public static final int a_corners = 6;
+int a_xCorners[] = {
+  -11,7,13,6,-11,-5,
+};
+int a_yCorners[] = {
+  -8,-8,0,10,8,0,
 };
 
 public static final int bg_val =24;
@@ -63,22 +71,22 @@ public void draw()
   spacey.show();
 }
 public void scan_key_bits(){
-  if((key_bits & (byte)(1<<BRAKE_BIT))!=0){
+  if((key_bits & (1<<BRAKE_BIT))!=0){
     spacey.brake(0.1f);
   }
-  if((key_bits & (byte)(1<<HYPER_BIT))!=0){
+  if((key_bits & (1<<HYPER_BIT))!=0){
     spacey.hyperspace();
   }
-  if((key_bits & (byte)(1<<UP_BIT))!=0){
+  if((key_bits & (1<<UP_BIT))!=0){
     spacey.accelerate((double)0.1f);
   }
-  if((key_bits & (byte)(1<<DOWN_BIT))!=0){
-    spacey.accelerate((double)-0.1f);
+  if((key_bits & (1<<DOWN_BIT))!=0){
+    spacey.accelerate((double)(-0.1f));
   }
-  if((key_bits & (byte)(1<<LEFT_BIT))!=0){
+  if((key_bits & (1<<LEFT_BIT))!=0){
     spacey.rotate(-8);
   }
-  if((key_bits & (byte)(1<<RIGHT_BIT))!=0){
+  if((key_bits & (1<<RIGHT_BIT))!=0){
     spacey.rotate(8);
   }
 }
@@ -175,6 +183,47 @@ class SpaceShip extends Floater
     }
 
 }
+
+class Asteroid extends Floater {
+  int rotSpeed;
+
+//your code here
+    public void setX(int x){myCenterX=x;}
+    public int getX(){return (int)myCenterX;}
+    public void setY(int y){myCenterY=y;}
+    public int getY(){return (int)myCenterY;}
+    public void setDirectionX(double x){myDirectionX=x;}
+    public double getDirectionX(){return myDirectionX;}
+    public void setDirectionY(double y){myDirectionY=y;}
+    public double getDirectionY(){return myDirectionY;}
+    public void setPointDirection(int degrees){myPointDirection=degrees;}
+    public double getPointDirection(){return myPointDirection;}
+
+
+  Asteroid(){
+    int rotSpeed = (int)((Math.random()*4)-2);
+    corners = a_corners;
+      xCorners = new int [corners];
+      yCorners = new int [corners];
+      myCenterX = width/2; 
+      myCenterY = height/2;
+      myDirectionX = 0; myDirectionY = 0;
+      myPointDirection = 0;
+      myColor = 0xff239589;//stuff
+      for(int i=0;i<corners;i++){
+        //ints arrays
+        xCorners[i] = a_xCorners[i];
+        yCorners[i] = a_yCorners[i];
+      }
+  }
+  public void move(){
+    //rotate
+    rotate(rotSpeed);
+    super.move();
+  }
+
+}
+
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
   protected int corners;  //the number of corners, a triangular floater has 3   
@@ -269,7 +318,7 @@ public class Star {
   }
 }
   static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "AsteroidsGame" };
+    String[] appletArgs = new String[] { "Part2" };
     if (passedArgs != null) {
       PApplet.main(concat(appletArgs, passedArgs));
     } else {
