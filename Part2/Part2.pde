@@ -5,9 +5,10 @@ public static final int DOWN_BIT  = 2;
 public static final int RIGHT_BIT = 3;
 public static final int BRAKE_BIT = 4;
 public static final int HYPER_BIT = 5;
-public int key_bits = 0x00;
 
-/**basic spaceship stuff**/
+public int key_bits = 0x00000000;
+
+/* basic spaceship stuff */
 public static final int basic_corners = 3;
 int basic_xCorners[] = {
   -8,16,-8,
@@ -24,7 +25,7 @@ int a_yCorners[] = {
   -8,-8,0,10,8,0,
 };
 
-public static final int bg_val =24;
+public static final int bg_val = 24;
 
 public static final int NUM_STARS = 64;
 Star [] stars;
@@ -246,23 +247,16 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   {      
     //change the x and y coordinates by myDirectionX and myDirectionY       
     myCenterX += myDirectionX;    
-    myCenterY += myDirectionY;     
-
+    myCenterY += myDirectionY;
     //wrap around screen    
-    if(myCenterX >width)
-    {     
+    if(myCenterX >width){     
       myCenterX = 0;    
-    }    
-    else if (myCenterX<0)
-    {     
+    } else if (myCenterX<0){     
       myCenterX = width;    
     }    
-    if(myCenterY >height)
-    {    
+    if(myCenterY >height){    
       myCenterY = 0;    
-    }   
-    else if (myCenterY < 0)
-    {     
+    } else if (myCenterY < 0){     
       myCenterY = height;    
     }   
   }   
