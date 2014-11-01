@@ -1,4 +1,4 @@
-/* keypress stuff */
+/* keypress stuff, button flag bit numbers */
 public static final int UP_BIT    = 0;
 public static final int LEFT_BIT  = 1;
 public static final int DOWN_BIT  = 2;
@@ -6,9 +6,10 @@ public static final int RIGHT_BIT = 3;
 public static final int BRAKE_BIT = 4;
 public static final int HYPER_BIT = 5;
 
+/* variable to store flags bits for each key */
 public int key_bits = 0x00000000;
 
-/* basic spaceship stuff */
+/* basic spaceship looks and stuff */
 public static final int basic_corners = 3;
 int basic_xCorners[] = {
   -8,16,-8,
@@ -17,6 +18,7 @@ int basic_yCorners[] = {
   -8,0,8,
 };
 
+/* stuff for the asteroid's looks */
 public static final int a_corners = 6;
 int a_xCorners[] = {
   -11,7,13,6,-11,-5,
@@ -31,101 +33,66 @@ public static final int NUM_STARS = 64;
 Star [] stars;
 
 SpaceShip spacey;
+Asteroid astrid;
+Asteroid [] rocks;
 
 //your variable declarations here
-public void setup() 
-{
+public void setup() {
   //your code here
   background(bg_val);
   size(255,255);
   spacey = new SpaceShip();
+  astrid = new Asteroid();
+
   stars = new Star[NUM_STARS];
   for(int i=0;i<stars.length;i++){
     stars[i]=new Star();
   }
 }
-public void draw() 
-{
+public void draw() {
   //your code here
   scan_key_bits();
   background(bg_val);
+  astrid.move();
+
   spacey.move();
   for(int i=0;i<stars.length;i++){
     stars[i].show();  
   }
   spacey.show();
+  astrid.show();
 }
 public void scan_key_bits(){
-  if((key_bits & (1<<BRAKE_BIT))!=0){
-    spacey.brake(0.1);
-  }
-  if((key_bits & (1<<HYPER_BIT))!=0){
-    spacey.hyperspace();
-  }
-  if((key_bits & (1<<UP_BIT))!=0){
-    spacey.accelerate((double)0.1);
-  }
-  if((key_bits & (1<<DOWN_BIT))!=0){
-    spacey.accelerate((double)(-0.1));
-  }
-  if((key_bits & (1<<LEFT_BIT))!=0){
-    spacey.rotate(-8);
-  }
-  if((key_bits & (1<<RIGHT_BIT))!=0){
-    spacey.rotate(8);
-  }
+  /* checks to see if the different button flag bits are set in 'key_bits'
+  then calls the functions that each button should do */
+  if((key_bits & (1<<BRAKE_BIT))!=0){ spacey.brake(0.1);}
+  if((key_bits & (1<<HYPER_BIT))!=0){ spacey.hyperspace();}
+  if((key_bits & (1<<UP_BIT))!=0){    spacey.accelerate((double)0.1);}
+  if((key_bits & (1<<DOWN_BIT))!=0){  spacey.accelerate((double)(-0.1));}
+  if((key_bits & (1<<LEFT_BIT))!=0){  spacey.rotate(-8);}
+  if((key_bits & (1<<RIGHT_BIT))!=0){ spacey.rotate(8);}
 }
 
 public void keyPressed(){
-if(key == 'b'){
-  key_bits |= (1<<BRAKE_BIT);
-}
-
-if(key == 'h'){
-  key_bits |= (1<<HYPER_BIT);
-}
-if(keyCode == UP){key_bits |= (1<<UP_BIT);}
+  /* runs when key is pressed */
+if(key == 'b'){     key_bits |= (1<<BRAKE_BIT);}
+if(key == 'h'){     key_bits |= (1<<HYPER_BIT);}
+if(keyCode == UP){  key_bits |= (1<<UP_BIT);}
 if(keyCode == LEFT){key_bits |= (1<<LEFT_BIT);}
 if(keyCode == RIGHT){key_bits |= (1<<RIGHT_BIT);}
 if(keyCode == DOWN){key_bits |= (1<<DOWN_BIT);}
-/*if(key == 'b'){
-  spacey.brake(0.1);
-} else {
-  if(!((keyCode ==LEFT)&&(keyCode == RIGHT))){  
-    if(keyCode == LEFT){
-      spacey.rotate(-8);
-    } //else 
-    if (keyCode == RIGHT){
-      spacey.rotate(8);
-    } 
-  }
-
-  if(!((keyCode==UP)&&(keyCode==DOWN))){
-    //else 
-    if (keyCode == UP){
-      spacey.accelerate((double)0.1);
-    } //else 
-    if (keyCode == DOWN){
-      spacey.accelerate((double)-0.1);
-    }
-  }
-}*/
 } 
 public void keyReleased() {
-if(key == 'b'){
-  key_bits &= ~(1<<BRAKE_BIT);
-}
-if(key == 'h'){
-  key_bits &= ~(1<<HYPER_BIT);
-}
-if(keyCode == UP){key_bits &= ~(1<<UP_BIT);}
+  /* runs when key is released */
+if(key == 'b'){     key_bits &= ~(1<<BRAKE_BIT);}
+if(key == 'h'){     key_bits &= ~(1<<HYPER_BIT);}
+if(keyCode == UP){  key_bits &= ~(1<<UP_BIT);}
 if(keyCode == LEFT){key_bits &= ~(1<<LEFT_BIT);}
 if(keyCode == RIGHT){key_bits &= ~(1<<RIGHT_BIT);}
 if(keyCode == DOWN){key_bits &= ~(1<<DOWN_BIT);} 
 } 
-class SpaceShip extends Floater  
-{   
-    //your code here
+class SpaceShip extends Floater  {   
+    /* for the spaceship */
     public void setX(int x){myCenterX=x;}
     public int getX(){return (int)myCenterX;}
     public void setY(int y){myCenterY=y;}
@@ -170,9 +137,9 @@ class SpaceShip extends Floater
 }
 
 class Asteroid extends Floater {
-  int rotSpeed;
-
-//your code here
+  int rotSpeed; /* variable to store rotation speed */
+  private static final int SHIP_BUFFER = 64;
+    /* finishing the abstract functions */
     public void setX(int x){myCenterX=x;}
     public int getX(){return (int)myCenterX;}
     public void setY(int y){myCenterY=y;}
@@ -184,29 +151,29 @@ class Asteroid extends Floater {
     public void setPointDirection(int degrees){myPointDirection=degrees;}
     public double getPointDirection(){return myPointDirection;}
 
-
   Asteroid(){
     int rotSpeed = (int)((Math.random()*4)-2);
     corners = a_corners;
-      xCorners = new int [corners];
-      yCorners = new int [corners];
-      myCenterX = width/2; 
-      myCenterY = height/2;
-      myDirectionX = 0; myDirectionY = 0;
-      myPointDirection = 0;
-      myColor = #239589;//stuff
-      for(int i=0;i<corners;i++){
-        //ints arrays
+    xCorners = new int [corners];
+    yCorners = new int [corners];
+    myCenterX = (double)((Math.random()*((width>>1)-SHIP_BUFFER)));
+    myCenterX += ((Math.random()>=0.5))?myCenterX:((width>>1)+SHIP_BUFFER); 
+    myCenterY = (double)((Math.random()*((height>>1)-SHIP_BUFFER)));
+    myCenterY += ((Math.random()>=0.5))?myCenterY:((height>>1)+SHIP_BUFFER);
+    myDirectionX = 0; myDirectionY = 0;
+    myPointDirection = 0;
+    myColor = #f3d2e1;//stuff
+    for(int i=0;i<corners;i++){
+        //inits arrays
         xCorners[i] = a_xCorners[i];
         yCorners[i] = a_yCorners[i];
-      }
+    }
   }
   public void move(){
     //rotate
     rotate(rotSpeed);
     super.move();
   }
-
 }
 
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
