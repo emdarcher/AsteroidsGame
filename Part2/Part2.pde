@@ -61,13 +61,12 @@ public void draw() {
   //astrid.move();
 
   spacey.move();
+  for(int i=0;i<stars.length;i++){
+    stars[i].show();  
+  }
   for(int r=0;r<rocks.length;r++){
     rocks[r].move();
     rocks[r].show();
-  }
-
-  for(int i=0;i<stars.length;i++){
-    stars[i].show();  
   }
   spacey.show();
   //astrid.show();
@@ -82,7 +81,6 @@ public void scan_key_bits(){
   if((key_bits & (1<<LEFT_BIT))!=0){  spacey.rotate(-8);}
   if((key_bits & (1<<RIGHT_BIT))!=0){ spacey.rotate(8);}
 }
-
 public void keyPressed(){
   /* runs when key is pressed */
 if(key == 'b'){     key_bits |= (1<<BRAKE_BIT);}
