@@ -89,7 +89,7 @@ if(key == 'b'){     key_bits |= (1<<BRAKE_BIT);}
 if(key == 'h'){     key_bits |= (1<<HYPER_BIT);}
 if(keyCode == UP){  key_bits |= (1<<UP_BIT);}
 if(keyCode == LEFT){key_bits |= (1<<LEFT_BIT);}
-if(keyCode == RIGHT){key_bits |= (1<<RIGHT_BIT);}
+if(keyCode == RIGHT){key_bits|= (1<<RIGHT_BIT);}
 if(keyCode == DOWN){key_bits |= (1<<DOWN_BIT);}
 } 
 public void keyReleased() {
@@ -98,7 +98,7 @@ if(key == 'b'){     key_bits &= ~(1<<BRAKE_BIT);}
 if(key == 'h'){     key_bits &= ~(1<<HYPER_BIT);}
 if(keyCode == UP){  key_bits &= ~(1<<UP_BIT);}
 if(keyCode == LEFT){key_bits &= ~(1<<LEFT_BIT);}
-if(keyCode == RIGHT){key_bits &= ~(1<<RIGHT_BIT);}
+if(keyCode == RIGHT){key_bits&= ~(1<<RIGHT_BIT);}
 if(keyCode == DOWN){key_bits &= ~(1<<DOWN_BIT);} 
 } 
 class SpaceShip extends Floater  {   
@@ -143,11 +143,10 @@ class SpaceShip extends Floater  {
       myCenterX = (double)((Math.random()*width));
       myCenterY = (double)((Math.random()*height)); 
     }
-
 }
 
 class Asteroid extends Floater {
-  int rotSpeed; /* variable to store rotation speed */
+  private int rotSpeed; /* variable to store rotation speed */
   private static final int SHIP_BUFFER = 64;
     /* finishing the abstract functions */
     public void setX(int x){myCenterX=x;}
@@ -170,7 +169,10 @@ class Asteroid extends Floater {
     myCenterX += ((Math.random()>=0.5))?myCenterX:((width>>1)+SHIP_BUFFER); 
     myCenterY = (double)((Math.random()*((height>>1)-SHIP_BUFFER)));
     myCenterY += ((Math.random()>=0.5))?myCenterY:((height>>1)+SHIP_BUFFER);
-    myDirectionX = 0; myDirectionY = 0;
+    //myDirectionX = 0; 
+    //myDirectionY = 0;
+    myDirectionX = (double)((Math.random()*2)-1);
+    myDirectionY = (double)((Math.random()*2)-1);
     myPointDirection = 0;
     myColor = #f3d2e1;//stuff
     for(int i=0;i<corners;i++){
