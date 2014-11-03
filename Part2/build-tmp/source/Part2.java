@@ -50,7 +50,9 @@ Star [] stars;
 
 SpaceShip spacey;
 Asteroid astrid;
+public static final int NUM_ROCKS = 4;
 Asteroid [] rocks;
+
 
 //your variable declarations here
 public void setup() {
@@ -59,7 +61,10 @@ public void setup() {
   size(255,255);
   spacey = new SpaceShip();
   astrid = new Asteroid();
-
+  rocks = new Asteroid[NUM_ROCKS];
+  for(int r=0;r<rocks.length;r++){
+    rocks[r] = new Asteroid();
+  }
   stars = new Star[NUM_STARS];
   for(int i=0;i<stars.length;i++){
     stars[i]=new Star();
@@ -69,14 +74,19 @@ public void draw() {
   //your code here
   scan_key_bits();
   background(bg_val);
-  astrid.move();
+  //astrid.move();
 
   spacey.move();
+  for(int r=0;r<rocks.length;r++){
+    rocks[r].move();
+    rocks[r].show();
+  }
+
   for(int i=0;i<stars.length;i++){
     stars[i].show();  
   }
   spacey.show();
-  astrid.show();
+  //astrid.show();
 }
 public void scan_key_bits(){
   /* checks to see if the different button flag bits are set in 'key_bits'
@@ -168,7 +178,7 @@ class Asteroid extends Floater {
     public double getPointDirection(){return myPointDirection;}
 
   Asteroid(){
-    int rotSpeed = (int)((Math.random()*4)-2);
+    rotSpeed = (int)((Math.random()*8)-4);
     corners = a_corners;
     xCorners = new int [corners];
     yCorners = new int [corners];
