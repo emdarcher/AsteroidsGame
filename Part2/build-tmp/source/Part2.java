@@ -21,7 +21,8 @@ public static final int DOWN_BIT  = 2;
 public static final int RIGHT_BIT = 3;
 public static final int BRAKE_BIT = 4;
 public static final int HYPER_BIT = 5;
-/* variable to store flags bits for each key */
+/* variable to store flags bits for each key, can store up to 32 flags
+because an int is 32 bits */
 public int key_bits = 0x00000000;
 
 /* basic spaceship looks and stuff */
@@ -110,7 +111,7 @@ public class SpaceShip extends Floater  {
       corners = basic_corners;
       xCorners = new int [corners];
       yCorners = new int [corners];
-      myCenterX = width/2; myCenterY = height/2;
+      myCenterX = (width>>1); myCenterY = (height>>1);
       myDirectionX = 0; myDirectionY = 0;
       myPointDirection = 0;
       myColor = 0xff239589;//stuff
@@ -222,15 +223,14 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
       myCenterY = height;    
     }   
   }   
-  public void show ()    { //Draws the floater at the current position            
+  public void show (){ //Draws the floater at the current position            
     fill(myColor);   
     stroke(myColor);    
     //convert degrees to radians for sin and cos         
     double dRadians = myPointDirection*(Math.PI/180);                 
     int xRotatedTranslated, yRotatedTranslated;    
     beginShape();         
-    for(int nI = 0; nI < corners; nI++)    
-    {     
+    for(int nI = 0; nI < corners; nI++) {     
       //rotate and translate the coordinates of the floater using current direction 
       xRotatedTranslated = (int)((xCorners[nI]* Math.cos(dRadians)) - (yCorners[nI] * Math.sin(dRadians))+myCenterX);     
       yRotatedTranslated = (int)((xCorners[nI]* Math.sin(dRadians)) + (yCorners[nI] * Math.cos(dRadians))+myCenterY);      

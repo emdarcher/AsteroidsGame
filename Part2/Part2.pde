@@ -5,7 +5,8 @@ public static final int DOWN_BIT  = 2;
 public static final int RIGHT_BIT = 3;
 public static final int BRAKE_BIT = 4;
 public static final int HYPER_BIT = 5;
-/* variable to store flags bits for each key */
+/* variable to store flags bits for each key, can store up to 32 flags
+because an int is 32 bits */
 public int key_bits = 0x00000000;
 
 /* basic spaceship looks and stuff */
@@ -94,7 +95,7 @@ public class SpaceShip extends Floater  {
       corners = basic_corners;
       xCorners = new int [corners];
       yCorners = new int [corners];
-      myCenterX = width/2; myCenterY = height/2;
+      myCenterX = (width>>1); myCenterY = (height>>1);
       myDirectionX = 0; myDirectionY = 0;
       myPointDirection = 0;
       myColor = #239589;//stuff
