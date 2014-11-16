@@ -1,3 +1,8 @@
+##AsteroidsGame Project:
+  * Part1: [code](https://github.com/emdarcher/AsteroidsGame)[webpage](http://emdarcher.github.io/AsteroidsGame)
+
+
+
 Asteroids (Part 1)
 ==================
 In this assignment we will start to replicate the old video game Asteroids. You will write a program that has a space ship that can be controlled with the keyboard. You will need to write a `SpaceShip` class. Your `SpaceShip` class will extend the `Floater` class, an abstract class that represents all things that float in space. 
