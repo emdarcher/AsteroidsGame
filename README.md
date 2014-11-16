@@ -1,6 +1,7 @@
 ##AsteroidsGame Project:
-  * Part1: [code](https://github.com/emdarcher/AsteroidsGame) [webpage](http://emdarcher.github.io/AsteroidsGame)
+  * Part1: [code](./) [webpage](http://emdarcher.github.io/AsteroidsGame)
   * Part2: [code](./Part2) [webpage](http://emdarcher.github.io/AsteroidsGame/Part2)
+  * Part3: [code](./Part3) [webpage](http://emdarcher.github.io/AsteroidsGame/Part2)
 
 
 Asteroids (Part 1)
