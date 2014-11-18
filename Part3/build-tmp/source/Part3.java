@@ -1,3 +1,19 @@
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class Part3 extends PApplet {
+
 /* keypress stuff, button flag bit numbers */
 public static final int UP_BIT    = 0;
 public static final int LEFT_BIT  = 1;
@@ -62,10 +78,10 @@ public void draw() {
 public void scan_key_bits(){
   /* checks to see if the different button flag bits are set in 'key_bits'
   then calls the functions that each button should do */
-  if((key_bits & (1<<BRAKE_BIT))!=0){ spacey.brake(0.1);}
+  if((key_bits & (1<<BRAKE_BIT))!=0){ spacey.brake(0.1f);}
   if((key_bits & (1<<HYPER_BIT))!=0){ spacey.hyperspace();}
-  if((key_bits & (1<<UP_BIT))!=0){    spacey.accelerate((double)0.1);}
-  if((key_bits & (1<<DOWN_BIT))!=0){  spacey.accelerate((double)(-0.1));}
+  if((key_bits & (1<<UP_BIT))!=0){    spacey.accelerate((double)0.1f);}
+  if((key_bits & (1<<DOWN_BIT))!=0){  spacey.accelerate((double)(-0.1f));}
   if((key_bits & (1<<LEFT_BIT))!=0){  spacey.rotate(-8);}
   if((key_bits & (1<<RIGHT_BIT))!=0){ spacey.rotate(8);}
 }
@@ -107,7 +123,7 @@ public class SpaceShip extends Floater  {
       myCenterX = (width>>1); myCenterY = (height>>1);
       myDirectionX = 0; myDirectionY = 0;
       myPointDirection = 0;
-      myColor = #239589;//stuff
+      myColor = 0xff239589;//stuff
       for(int i=0;i<corners;i++){ //ints arrays
         xCorners[i] = basic_xCorners[i];
         yCorners[i] = basic_yCorners[i];
@@ -150,13 +166,13 @@ public class Asteroid extends Floater {
     xCorners = new int [corners];
     yCorners = new int [corners];
     myCenterX = (double)((Math.random()*((width>>1)-SHIP_BUFFER)));
-    myCenterX += ((Math.random()>=0.5)) ? myCenterX:((width>>1)+SHIP_BUFFER); 
+    myCenterX += ((Math.random()>=0.5f)) ? myCenterX:((width>>1)+SHIP_BUFFER); 
     myCenterY = (double)((Math.random()*((height>>1)-SHIP_BUFFER)));
-    myCenterY += ((Math.random()>=0.5)) ? myCenterY:((height>>1)+SHIP_BUFFER);
+    myCenterY += ((Math.random()>=0.5f)) ? myCenterY:((height>>1)+SHIP_BUFFER);
     myDirectionX = (double)((Math.random()*2)-1);
     myDirectionY = (double)((Math.random()*2)-1);
     myPointDirection = 0;
-    myColor = #f3d2e1;//stuff
+    myColor = 0xfff3d2e1;//stuff
     for(int i=0;i<corners;i++){ //inits arrays
         xCorners[i] = a_xCorners[i];
         yCorners[i] = a_yCorners[i];
@@ -235,17 +251,26 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
 
 public class Star {
   private int Sx, Sy;
-  private color Scolor;
+  private int Scolor;
   private int Sdia;
   public Star(){
     Sx = (int)(width*(Math.random()));
     Sy = (int)(height*(Math.random()));
-    Scolor= #ffffff;
+    Scolor= 0xffffffff;
     Sdia = 2;
   }
   public void show(){
     fill(Scolor);
     stroke(Scolor);
     ellipse(Sx, Sy, Sdia, Sdia);
+  }
+}
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "Part3" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
   }
 }
