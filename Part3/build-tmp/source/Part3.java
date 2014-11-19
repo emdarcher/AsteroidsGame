@@ -69,12 +69,17 @@ public void draw() {
   //for(int r=0;r<rocks.length;r++){
     //rocks[r].move(); /* move and show the Asteroids */
     //rocks[r].show(); }
+  for(int r=0;r<rocks_list.size();r++){
+    if(rocks_list.get(r).shipDist(spacey) < 20){
+      rocks_list.remove(r);
+    } else {}
+  }
   for(Asteroid ast : rocks_list){
     ast.move();
     ast.show();
   }
   spacey.show();
-}
+} 
 public void scan_key_bits(){
   /* checks to see if the different button flag bits are set in 'key_bits'
   then calls the functions that each button should do */
@@ -146,8 +151,8 @@ public class SpaceShip extends Floater  {
 }//end Spaceship class
 
 public class Asteroid extends Floater {
-  private int rotSpeed; /* variable to store rotation speed */
-  private static final int SHIP_BUFFER = 64;
+    private int rotSpeed; /* variable to store rotation speed */
+    private static final int SHIP_BUFFER = 64;
     /* finishing the abstract functions */
     public void setX(int x){myCenterX=x;}
     public int getX(){return (int)myCenterX;}
@@ -175,12 +180,15 @@ public class Asteroid extends Floater {
     myColor = 0xfff3d2e1;//stuff
     for(int i=0;i<corners;i++){ //inits arrays
         xCorners[i] = a_xCorners[i];
-        yCorners[i] = a_yCorners[i];
+        yCorners[i]  = a_yCorners[i];
     }
-  }
+  } 
   public void move(){
     rotate(rotSpeed); //rotate the Asteroid
-    super.move(); //call the original 'move()''
+    super.move(); //call the original 'move()'
+  }
+  public float shipDist(SpaceShip ship){
+    return dist((float)myCenterX, (float)myCenterY, ship.getX(), ship.getY());
   }
 } //end asteroid class
 
