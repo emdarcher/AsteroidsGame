@@ -21,27 +21,24 @@ int a_yCorners[] = { -8,-8,0,10,8,0, };
 public static final int bg_val = 24; /* stores the background value */
 
 public static final int NUM_STARS = 64; /* Number of stars to have */
-Star [] stars; /* instance of a Star array for the stars */
-SpaceShip spacey;/* instance of a Spaceship */
-Asteroid astrid; /* instance of an Asteroid (used in testing) */ 
+Star [] stars; /* declaration of a Star array for the stars */
+SpaceShip spacey;/* a Spaceship */
+//Asteroid astrid; /* an Asteroid (used in testing) */ 
 public static final int NUM_ROCKS = 4; /* number of "rocks" (Asteroids) */
-//Asteroid [] rocks; /* instance of an Asteroid array */
-ArrayList <Asteroid> rocks_list;
+ArrayList <Asteroid> rocks_list; /* declare an Asteroid ArrayList */
 
 public void setup() {
   background(bg_val);
   size(255,255);
   spacey = new SpaceShip(); /* inits the spaceship */
-  //rocks = new Asteroid[NUM_ROCKS]; /* inits Asteroids */
-  /*for(int r=0;r<rocks.length;r++){
-    rocks[r] = new Asteroid(); }*/
   rocks_list = new ArrayList <Asteroid>();
   for(int r=0;r<NUM_ROCKS;r++){
     rocks_list.add( new Asteroid() ); 
   }
   stars = new Star[NUM_STARS]; /* inits Stars */
   for(int i=0;i<stars.length;i++){
-    stars[i]=new Star(); }
+    stars[i]=new Star(); 
+  }
 }
 public void draw() {
   scan_key_bits(); /* function checks to see which flags in 'key_bits'
@@ -49,18 +46,12 @@ public void draw() {
   background(bg_val); /* set backround to clear screen */ 
   spacey.move();
   for(int i=0;i<stars.length;i++){ //show the stars (this is quite inefficient,
-    stars[i].show(); }              //should only have to happen once and stay)
-  //for(int r=0;r<rocks.length;r++){
-    //rocks[r].move(); /* move and show the Asteroids */
-    //rocks[r].show(); }
+    stars[i].show(); }             //should only have to happen once and stay)
   for(int r=0;r<rocks_list.size();r++){
-    if(rocks_list.get(r).shipDist(spacey) < 20){
-      rocks_list.remove(r);
-    } else {}
+    if(rocks_list.get(r).shipDist(spacey) < 20){ rocks_list.remove(r); }
   }
   for(Asteroid ast : rocks_list){
-    ast.move();
-    ast.show();
+    ast.move(); ast.show();/* move then show the Asteroids */
   }
   spacey.show();
 } 
