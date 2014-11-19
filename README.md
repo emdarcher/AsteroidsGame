@@ -2,7 +2,7 @@
   * Part1: [code](./) [webpage](http://emdarcher.github.io/AsteroidsGame)
   * Part2: [code](./Part2) [webpage](http://emdarcher.github.io/AsteroidsGame/Part2)
   * Part3: [code](./Part3) [webpage](http://emdarcher.github.io/AsteroidsGame/Part3)
-
+  * Part4: [code](./Part4) [webpage](http://emdarcher.github.io/AsteroidsGame/Part4)
 
 Asteroids (Part 1)
 ==================
