@@ -21,9 +21,12 @@ public static final int DOWN_BIT  = 2;
 public static final int RIGHT_BIT = 3;
 public static final int BRAKE_BIT = 4;
 public static final int HYPER_BIT = 5;
+public static final int SHOOT_BIT = 6;
 /* variable to store flags bits for each key, can store up to 32 flags
 because an int is 32 bits */
 public int key_bits = 0x00000000;
+/* variable stores the previous state of key_bits, for debouncing and stuff */
+public int old_key_bits = 0x00000000;
 
 /* basic spaceship looks and stuff */
 public static final int basic_corners = 3;
@@ -38,16 +41,21 @@ public static final int bg_val = 24; /* stores the background value */
 
 public static final int NUM_STARS = 64; /* Number of stars to have */
 Star [] stars; /* declaration of a Star array for the stars */
-SpaceShip spacey;/* a Spaceship */
+SpaceShip spacey;/* a SpaceShip */
 //Asteroid astrid; /* an Asteroid (used in testing) */ 
-public static final int NUM_ROCKS = 4; /* number of "rocks" (Asteroids) */
+public static final int NUM_ROCKS = 6; /* number of "rocks" (Asteroids) */
 ArrayList <Asteroid> rocks_list; /* declare an Asteroid ArrayList */
+//Bullet bull;
+ArrayList <Bullet> bullet_list;
+
+public static final int COLLISION_DIST = 20;
 
 public void setup() {
   background(bg_val);
   size(255,255);
   spacey = new SpaceShip(); /* inits the spaceship */
   rocks_list = new ArrayList <Asteroid>();
+  bullet_list = new ArrayList <Bullet>();
   for(int r=0;r<NUM_ROCKS;r++){
     rocks_list.add( new Asteroid() ); 
   }
@@ -55,22 +63,37 @@ public void setup() {
   for(int i=0;i<stars.length;i++){
     stars[i]=new Star(); 
   }
+  //bull = new Bullet(spacey);
 }
 public void draw() {
   scan_key_bits(); /* function checks to see which flags in 'key_bits'
                     * have been set, and then executes the proper movements */
   background(bg_val); /* set backround to clear screen */ 
+  move_show_bullets();
   spacey.move();
   for(int i=0;i<stars.length;i++){ //show the stars (this is quite inefficient,
     stars[i].show(); }             //should only have to happen once and stay)
   for(int r=0;r<rocks_list.size();r++){
-    if(rocks_list.get(r).shipDist(spacey) < 20){ rocks_list.remove(r); }
+    if(rocks_list.get(r).shipDist(spacey) < COLLISION_DIST){ 
+      rocks_list.remove(r); }
+    for(int b=0;b<bullet_list.size();b++){
+      if(rocks_list.get(r).bulletDist(bullet_list.get(b)) < COLLISION_DIST){
+        rocks_list.remove(r); bullet_list.remove(b);
+        break;
+      }
+    }
   }
   for(Asteroid ast : rocks_list){
     ast.move(); ast.show();/* move then show the Asteroids */
   }
   spacey.show();
 } 
+public void move_show_bullets(){
+  for(int b=0;b<bullet_list.size();b++){
+    bullet_list.get(b).move(); bullet_list.get(b).show();
+  }
+}
+
 public void scan_key_bits(){
   /* checks to see if the different button flag bits are set in 'key_bits'
   then calls the functions that each button should do */
@@ -80,24 +103,36 @@ public void scan_key_bits(){
   if((key_bits & (1<<DOWN_BIT))!=0){  spacey.accelerate((double)(-0.1f));}
   if((key_bits & (1<<LEFT_BIT))!=0){  spacey.rotate(-8);}
   if((key_bits & (1<<RIGHT_BIT))!=0){ spacey.rotate(8);}
+  if(((key_bits & (1<<SHOOT_BIT))!=0) 
+    && ((old_key_bits & (1<<SHOOT_BIT))==0)){
+    /* if state of SHOOT_BIT has toggled from 0 to 1 */
+    bullet_list.add(new Bullet(spacey));
+  }
+  old_key_bits = key_bits;
 }
 public void keyPressed(){
   /* runs when key is pressed */
-if(key == 'b'){     key_bits |= (1<<BRAKE_BIT);}
-if(key == 'h'){     key_bits |= (1<<HYPER_BIT);}
-if(keyCode == UP){  key_bits |= (1<<UP_BIT);}
-if(keyCode == LEFT){key_bits |= (1<<LEFT_BIT);}
-if(keyCode == RIGHT){key_bits|= (1<<RIGHT_BIT);}
-if(keyCode == DOWN){key_bits |= (1<<DOWN_BIT);}
+  if(key == 'b'){     key_bits |= (1<<BRAKE_BIT);}
+  if(key == 'h'){     key_bits |= (1<<HYPER_BIT);}
+  if(key == CODED){
+    if(keyCode == UP){  key_bits |= (1<<UP_BIT);}
+    if(keyCode == LEFT){key_bits |= (1<<LEFT_BIT);}
+    if(keyCode == RIGHT){key_bits|= (1<<RIGHT_BIT);}
+    if(keyCode == DOWN){key_bits |= (1<<DOWN_BIT);}
+    if(keyCode == SHIFT){key_bits|= (1<<SHOOT_BIT);}
+  }
 } 
 public void keyReleased() {
   /* runs when key is released */
-if(key == 'b'){     key_bits &= ~(1<<BRAKE_BIT);}
-if(key == 'h'){     key_bits &= ~(1<<HYPER_BIT);}
-if(keyCode == UP){  key_bits &= ~(1<<UP_BIT);}
-if(keyCode == LEFT){key_bits &= ~(1<<LEFT_BIT);}
-if(keyCode == RIGHT){key_bits&= ~(1<<RIGHT_BIT);}
-if(keyCode == DOWN){key_bits &= ~(1<<DOWN_BIT);} 
+  if(key == 'b'){     key_bits &= ~(1<<BRAKE_BIT);}
+  if(key == 'h'){     key_bits &= ~(1<<HYPER_BIT);}
+  if(key == CODED){
+    if(keyCode == UP){  key_bits &= ~(1<<UP_BIT);}
+    if(keyCode == LEFT){key_bits &= ~(1<<LEFT_BIT);}  
+    if(keyCode == RIGHT){key_bits&= ~(1<<RIGHT_BIT);}
+    if(keyCode == DOWN){key_bits &= ~(1<<DOWN_BIT);} 
+    if(keyCode == SHIFT){key_bits&= ~(1<<SHOOT_BIT);}
+  }
 } 
 public class SpaceShip extends Floater  {   
     /* for the spaceship */
@@ -181,7 +216,39 @@ public class Asteroid extends Floater {
   public float shipDist(SpaceShip ship){
     return dist((float)myCenterX, (float)myCenterY, ship.getX(), ship.getY());
   }
+  public float bulletDist(Bullet bullet){
+    return dist((float)myCenterX, (float)myCenterY, bullet.getX(), bullet.getY());
+  }
 } //end asteroid class
+
+public class Bullet extends Floater {
+
+    /* finishing the abstract functions */
+    public void setX(int x){myCenterX=x;}
+    public int getX(){return (int)myCenterX;}
+    public void setY(int y){myCenterY=y;}
+    public int getY(){return (int)myCenterY;}
+    public void setDirectionX(double x){myDirectionX=x;}
+    public double getDirectionX(){return myDirectionX;}
+    public void setDirectionY(double y){myDirectionY=y;}
+    public double getDirectionY(){return myDirectionY;}
+    public void setPointDirection(int degrees){myPointDirection=degrees;}
+    public double getPointDirection(){return myPointDirection;}
+
+  public Bullet(SpaceShip theShip){
+    myCenterX = theShip.getX(); myCenterY = theShip.getY();
+    myPointDirection = theShip.getPointDirection();
+    double dRadians =myPointDirection*(Math.PI/180);
+    myDirectionX = 5 * Math.cos(dRadians) + theShip.getDirectionX();
+    myDirectionY = 5 * Math.sin(dRadians) + theShip.getDirectionX();
+    myColor = 0xff24ff20;
+
+  }
+  public void show(){
+    fill(myColor);
+    ellipse((float)myCenterX,(float)myCenterY, 4, 4);
+  }
+}
 
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
